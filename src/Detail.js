@@ -4,8 +4,8 @@ import './index.scss';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from './Home';
-import Detail from './Detail';
-export default class App extends React.Component {
+
+export default class Detail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ export default class App extends React.Component {
     this.handleMessageInput = this.handleMessageInput.bind(this);
   }
 
-  getComplaints() {
+  componentWillMount() {
     return axios.get('/complaints')
     .then(result => {
       this.setState({
@@ -41,44 +41,40 @@ export default class App extends React.Component {
   }
 
   render() {
+    const list = this.state.complaints.map(item => {
+      return (
+        <tr key={item.id}>
+          <td>{item.category}</td>
+          <td>{item.rank}</td>
+          <td>{item.speech}</td>
+        </tr>
+      );
+    })
     return (
-
-      <Router>
-      <div style={{display: 'flex'}}>
-        <ul style={styles.nav}>
-          <li>
-            <Link to="/">Register</Link>
-          </li>
-          <li>
-            <Link to="/details">Details</Link>
-          </li>
-        </ul>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/details" component={Detail} />
+      <div style={styles.listPanel}>
+      <table>
+        <thead>
+          <tr>
+          <th>Category</th>
+          <th>Rank</th>
+          <th>Speech</th>
+          </tr>
+        </thead>
+        <tbody>
+          {list}
+        </tbody>
+      </table>
       </div>
-    </Router>
       
     );
   }
 }
 
 const styles = {
-  speechPanel: {
-    padding: '16px'
-  },
-  nav: {
-    listStyleType: 'none',
+  listPanel: {
     padding: '16px',
-    borderRight: '1px solid gray',
-    height: '100vh'
+    height: '90vh',
+    overflowX: 'auto'
   }
 }
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-);
-
-if (module.hot) {
-  module.hot.accept();
-}

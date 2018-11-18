@@ -6,3 +6,29 @@
 /*
  * Global CSS
  */
+
+ button {
+  box-sizing: border-box;
+  font-weight: 500;
+  display: inline;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1;
+  height: 32px;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 112, 221);
+  border-radius: 3px;
+  transition: background-color 0.25s ease-out 0s, color 0.25s ease-out 0s;
+  padding: 8px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-image: initial;
+ }
+
+ .disabled {
+   opacity: 0.3;
+ }

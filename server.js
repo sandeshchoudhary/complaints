@@ -11,6 +11,8 @@ const fs = require('fs');
 const storeDir = __dirname + '/public/';
 var encoding = 'utf8';
 const mongoose = require('mongoose');
+// import axios from 'axios';
+const axios = require('axios');
 
 /*
  * Mongo connection
@@ -29,6 +31,36 @@ db.once('open', function () {
 
 });
 
+app.get(`/complaints`, (req, res) => {
+    axios.get('http://10.10.5.193:8888/complains')
+    .then(result => {
+      // apply view on data
+      console.log(result.data);
+      res.send(result.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+});
+
+app.post(`/complaints`, (req, res) => {
+  axios({
+    method: 'post',
+    url: 'http://10.10.5.193:8888/complains',
+    data: {"speech": req.query.message},
+    config: { headers: {'Content-Type': 'application/json' }}
+  })
+  // axios.post(`http://10.10.5.193:8888/complains`, {})
+  .then(result => {
+    // apply view on data
+    console.log(result.data);
+    res.send(result.data);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+});
+
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'app.js',
@@ -42,6 +74,8 @@ app.use(webpackHotMiddleware(compiler, {
   path: '/__webpack_hmr',
   heartbeat: 10 * 1000,
 }));
+
+app.route('/')
 
 app.use('/dist', express.static(__dirname + '/dist/'));
 app.use('/public', express.static(__dirname + '/public'));
